@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components'
 
 import bg from './resources/bg-hingo.jpg'
 import logo from './resources/logo-hingo.svg'
 import iconRefresh from './resources/Refresh.svg'
 import iconDown from './resources/ArrowDown.svg'
+
+import { Heuristic } from './Heuristic'
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Lexend&display=swap');
@@ -174,20 +176,58 @@ const Footer = styled.div`
   left: 16px;
 `
 
-class Heuristic {
-  name: string
-  type: string
-  subtitle: string
-  body: string
-
-
-  constructor(){
-    this.name = "heuristic-name"
-    this.type = "Behavior"
-    this.subtitle = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam."
-    this.body = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
-  }
+let curHeuristic: Heuristic
+let language: number = 0
+let maxId: number = 52
+let defaultHeuristic: Heuristic = {
+  id: 0,
+  name: "Klicke zu Starten auf den rechten Button!",
+  type: "default",
+  subtitle: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.",
+  body: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
 }
+
+function getRandomIntInclusive(){
+  return Math.floor(Math.random() * (maxId +1))
+}
+
+function getHeuristic(id: number): Promise<Heuristic>{
+  return fetch(`https://fbackend.azurewebsites.net/hingo/` + id)
+    .then(res => res.json())
+    .then(res => {
+      console.log(`Fetching heuristic `+ id + ` ...`)
+      
+      switch(language){
+        case 0: {
+          curHeuristic = {
+            id: res.data[0].ID,
+            name: res.data[0].Title_DE,
+            type: res.data[0].Category_DE,
+            subtitle: res.data[0].Subtitle_DE,
+            body: res.data[0].Body_DE
+          }
+          break
+        }
+        default:{
+            curHeuristic = {
+            id: res.data[0].ID,
+            name: res.data[0].Title_EN,
+            type: res.data[0].Category_EN,
+            subtitle: res.data[0].Subtitle_EN,
+            body: res.data[0].Body_EN
+          }
+          break
+        }
+      }
+
+      console.log("Done!")
+      return curHeuristic
+    })
+    .catch(err => {
+      console.log(err.message)
+      return defaultHeuristic
+    })
+  }
 
 function Title(){
   return (
@@ -199,14 +239,15 @@ function Title(){
 }
 
 function CardContent(){
-  let currentHeuristic = new Heuristic()
-  const [heuristicContent, setContent] = useState(currentHeuristic);
+  curHeuristic = defaultHeuristic
+
+  const [heuristicContent, setContent] = useState(curHeuristic);
 
   return(
     <div>
       <CardHeader>
-        <H1>{heuristicContent?.name}</H1>
-        <CategoryTag>{heuristicContent?.type}</CategoryTag>
+        <H1>{heuristicContent.name}</H1>
+        <CategoryTag>{heuristicContent.type}</CategoryTag>
       </CardHeader>
       <LineGray/>
       <div>{heuristicContent.subtitle}</div>
@@ -216,8 +257,8 @@ function CardContent(){
           <img src={iconDown} alt={'Refresh'}/>
         </ButtonPrimary>
         <ButtonPrimary
-          onClick={() => {
-            setContent(currentHeuristic)
+          onClick={async () => {
+            setContent(await getHeuristic(getRandomIntInclusive()))
            }
           }
         >
