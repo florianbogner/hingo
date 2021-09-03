@@ -181,7 +181,7 @@ let language: number = 0
 let maxId: number = 52
 let defaultHeuristic: Heuristic = {
   id: 0,
-  name: "Klicke zu Starten auf den rechten Button!",
+  name: "Starten mit dem rechten Button",
   type: "default",
   subtitle: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.",
   body: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
