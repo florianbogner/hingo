@@ -6,6 +6,8 @@ import bg from './resources/bg-hingo.jpg'
 import logo from './resources/logo-hingo.svg'
 import iconRefresh from './resources/Refresh.svg'
 import iconDown from './resources/ArrowDown.svg'
+import iconTrash from './resources/Trash.svg'
+import iconDownload from './resources/Download.svg'
 
 import { Heuristic } from './Heuristic'
 
@@ -74,24 +76,23 @@ const Background = styled.div`
   background-size: cover;
 `
 
-const ContentContainer = styled.div`
+const ContentWrapper = styled.div`
   display: grid;
   place-items: center;
 `
 
-const LineGray = styled.hr`
+const LineGray = styled.div`
   display: block;
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin: 16px 0;
   border-width:0;
   height: 1px;
   background-color: #ebebeb;
 `
 
-const LineWhite = styled.hr`
+const LineWhite = styled.div`
   display: block;
   margin-top: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   border-width:0;
   height: 1px;
   background-color: #ffffff;
@@ -111,6 +112,7 @@ const Card = styled.div`
 const CardHeader = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `
 
 const H1 = styled.div`
@@ -149,8 +151,7 @@ const ButtonPrimary = styled.button`
   width: 64px;
   height: 64px;
 
-  margin-left: 6px;
-  margin-right: 6px;
+  margin: 0 6px;
   padding: 12px;
 
   border-radius: 32px;
@@ -158,16 +159,74 @@ const ButtonPrimary = styled.button`
 
   border: none; 
   cursor: pointer;
+
+  &:disabled{
+    background: #ebebeb;
+    cursor: default;
+  }
+`
+
+const ButtonSecondary = styled.button`
+  width: 48px;
+  height: 48px;
+
+  padding: 12px;
+
+  border-radius: 24px;
+  background-color: #ffffff;
+
+  border: none; 
+  cursor: pointer;
+`
+
+const ButtonText = styled.button`
+  height: 48px;
+  padding: 12px 24px;
+  margin-top: 24px;
+
+  font-size: 14px;
+
+  color: #ffffff;
+  background-color: #000000;
+  border-radius: 12px;
+  border: none; 
+  cursor: pointer;
 `
 
 const History = styled.div`
   margin: 48px;
   margin-top: 24px;
-  max-width: 419px;
   padding: 24px;
 
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 24px;
+`
+
+const HeuristicListItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 6px;
+`
+
+const HeuristicItemTitle = styled.div`
+  cursor: pointer;
+
+  &:hover{
+    color: #ffffff;
+  }
+`
+
+const StartContentWrapper = styled.div`
+  margin: 24px;
+  max-width: 300px;
+  display: grid;
+  justify-content: center;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.5);;
+  padding: 24px;
+  border-radius: 24px;
+  border: 1px solid white;
 `
 
 const Footer = styled.div`
@@ -175,17 +234,17 @@ const Footer = styled.div`
   bottom: 16px;
   left: 16px;
 `
-
-let curHeuristic: Heuristic
-let language: number = 0
-let maxId: number = 52
-let defaultHeuristic: Heuristic = {
+const defaultHeuristic: Heuristic = {
   id: 0,
-  name: "Starten mit dem rechten Button",
+  name: "Hingo",
   type: "default",
   subtitle: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.",
   body: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
-}
+} 
+
+let curHeuristic: Heuristic = defaultHeuristic
+let language: number = 0
+let maxId: number = 52
 
 function getRandomIntInclusive(){
   return Math.floor(Math.random() * (maxId +1))
@@ -199,29 +258,24 @@ function getHeuristic(id: number): Promise<Heuristic>{
       
       switch(language){
         case 0: {
-          curHeuristic = {
+          return {
             id: res.data[0].ID,
             name: res.data[0].Title_DE,
             type: res.data[0].Category_DE,
             subtitle: res.data[0].Subtitle_DE,
             body: res.data[0].Body_DE
           }
-          break
         }
         default:{
-            curHeuristic = {
+            return {
             id: res.data[0].ID,
             name: res.data[0].Title_EN,
             type: res.data[0].Category_EN,
             subtitle: res.data[0].Subtitle_EN,
             body: res.data[0].Body_EN
           }
-          break
         }
       }
-
-      console.log("Done!")
-      return curHeuristic
     })
     .catch(err => {
       console.log(err.message)
@@ -238,45 +292,127 @@ function Title(){
   )
 }
 
-function CardContent(){
-  curHeuristic = defaultHeuristic
+function Content(){
+  const [started, setStarted] = useState(false)
+  const [heuristicContent, setContent] = useState(curHeuristic)
+  const [heuristicList, setItems] = useState(new Array<Heuristic>())
+  const [alreadyAdded, setAddedState] = useState(false)
 
-  const [heuristicContent, setContent] = useState(curHeuristic);
+  const handleAddButtonClick = () => {
+    const newHeuristicList = [curHeuristic, ...heuristicList]
+    setItems(newHeuristicList)
+  }
+
+  const handleDeleteButtonClick = (index: number) => {
+    const newHeuristicList = [...heuristicList]
+
+    newHeuristicList.splice(index, 1)
+
+    setItems(newHeuristicList)
+  }
+
+  const checkIfHeuristicIsInHistory = () => {
+    const found = heuristicList.find((h) => h === curHeuristic)
+  }
 
   return(
-    <div>
-      <CardHeader>
-        <H1>{heuristicContent.name}</H1>
-        <CategoryTag>{heuristicContent.type}</CategoryTag>
-      </CardHeader>
-      <LineGray/>
-      <div>{heuristicContent.subtitle}</div>
-      <CardBody>{heuristicContent.body}</CardBody>
-      <ButtonRow>
-        <ButtonPrimary>
-          <img src={iconDown} alt={'Refresh'}/>
-        </ButtonPrimary>
-        <ButtonPrimary
-          onClick={async () => {
-            setContent(await getHeuristic(getRandomIntInclusive()))
-           }
+    <ContentWrapper>
+    {started ? (
+      <div>
+      <Card>
+        <CardHeader>
+          <H1>{heuristicContent.name}</H1>
+          <CategoryTag>{heuristicContent.type}</CategoryTag>
+        </CardHeader>
+        <LineGray/>
+        <div>{heuristicContent.subtitle}</div>
+        <CardBody>{heuristicContent.body}</CardBody>
+        <ButtonRow>
+          <ButtonPrimary
+            disabled = {alreadyAdded}
+            onClick={() => {
+              handleAddButtonClick()
+              setAddedState(true)
+            }
           }
+          >
+            <img src={iconDown} alt={'Add to list'}/>
+          </ButtonPrimary>
+          <ButtonPrimary
+            onClick={async () => {
+                curHeuristic = await getHeuristic(getRandomIntInclusive())
+                setContent(curHeuristic)
+                setAddedState(false)
+              }
+            }
+          >
+            <img src={iconRefresh} alt={'Refresh'}/>
+          </ButtonPrimary>
+        </ButtonRow>
+      </Card>
+      {heuristicList.length !== 0 ? (
+        <History>
+        <CardHeader>
+          <H1>
+            Aktuelle Auswahl
+          </H1>
+          <ButtonSecondary>
+            <img src={iconDownload} alt={'Download'}/>
+          </ButtonSecondary>
+        </CardHeader>
+        <LineWhite/>
+        <div>
+          {
+            heuristicList.map((item, index) => (
+              <HeuristicListItem>
+                <HeuristicItemTitle 
+                  onClick={()=> {
+                  setContent(heuristicList[index])
+                }}>
+                  {item.name}
+                </HeuristicItemTitle>
+                <ButtonSecondary
+                  onClick = {() => {
+                    handleDeleteButtonClick(index)
+                  }}
+                >
+                  <img src={iconTrash} alt={'Delete'}/>
+                </ButtonSecondary>
+              </HeuristicListItem>
+            ))
+          }
+        </div>
+      </History>
+      ):(
+        <div/>
+      )}
+    </div>
+    ):(
+      <StartContentWrapper>
+        <H1>
+          Willkommen bei Hingo!
+        </H1>
+        <div
+          style={{marginTop: "8px"}}
+        > 
+          Hingo läuft auf einem kostenlosen App Service Plan. Falls die erste Heuristik nicht lädt, war die Instanz im Standby. Versuch' es einfach in wenigen Minuten erneut.
+        </div>
+        <ButtonText
+          onClick = {async () => {
+            curHeuristic = await getHeuristic(getRandomIntInclusive())
+            setContent(curHeuristic)
+            setAddedState(false)
+            setStarted(true)
+          }}
         >
-          <img src={iconRefresh} alt={'Refresh'}/>
-        </ButtonPrimary>
-      </ButtonRow>
-    </div>
-  )
-}
-
-function HistoryContent(){
-  return(
-    <div>
-      <H1>
-        Aktuelle Auswahl
-      </H1>
-      <LineWhite/>
-    </div>
+          Loslegen
+        </ButtonText>
+      </StartContentWrapper>
+    )}
+    <Footer>
+      <a href="https://www.linkedin.com/in/florian-bogner-84a907142/" target="_blank" rel="noreferrer" >© Florian Bogner 2021</a>
+    </Footer>
+  </ContentWrapper>
   )
 }
 
@@ -285,17 +421,7 @@ ReactDOM.render(
     <GlobalStyle/>
     <Background>
       <Title/>
-      <ContentContainer>
-        <Card>
-          <CardContent/>
-        </Card>
-        <History>
-          <HistoryContent/>
-        </History>
-        <Footer>
-          <a href="https://www.linkedin.com/in/florian-bogner-84a907142/" target="_blank" rel="noreferrer" >© Florian Bogner 2021</a>
-        </Footer>
-      </ContentContainer>
+      <Content/>
     </Background>
   </React.StrictMode>,
   document.getElementById('root')
