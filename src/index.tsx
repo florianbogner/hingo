@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import ReactDOM from 'react-dom';
 import styled, { createGlobalStyle } from 'styled-components'
+import Loader from "react-loader-spinner"
 
 import bg from './resources/bg-hingo.jpg'
 import logo from './resources/logo-hingo.svg'
@@ -185,6 +186,7 @@ const ButtonText = styled.button`
   margin-top: 24px;
 
   font-size: 14px;
+  font-family: 'Lexend', sans-serif;
 
   color: #ffffff;
   background-color: #000000;
@@ -242,7 +244,6 @@ const defaultHeuristic: Heuristic = {
   body: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
 } 
 
-let curHeuristic: Heuristic = defaultHeuristic
 let language: number = 0
 let maxId: number = 52
 
@@ -294,26 +295,26 @@ function Title(){
 
 function Content(){
   const [started, setStarted] = useState(false)
-  const [heuristicContent, setContent] = useState(curHeuristic)
+  const [heuristicContent, setContent] = useState(defaultHeuristic)
   const [heuristicList, setItems] = useState(new Array<Heuristic>())
-  const [alreadyAdded, setAddedState] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-  const handleAddButtonClick = () => {
-    const newHeuristicList = [curHeuristic, ...heuristicList]
+  const handleAddButtonClick = useCallback(() => {
+    const newHeuristicList = [heuristicContent, ...heuristicList]
     setItems(newHeuristicList)
-  }
+  }, [heuristicContent, heuristicList])
 
-  const handleDeleteButtonClick = (index: number) => {
+  const handleDeleteButtonClick = useCallback((index: number) => {
     const newHeuristicList = [...heuristicList]
 
     newHeuristicList.splice(index, 1)
 
     setItems(newHeuristicList)
-  }
+  }, [heuristicList])
 
-  const checkIfHeuristicIsInHistory = () => {
-    const found = heuristicList.find((h) => h === curHeuristic)
-  }
+  const isAdded = useMemo(()=>{
+    return !!heuristicList.find((h) => h.id === heuristicContent.id)
+  },[heuristicList,heuristicContent])
 
   return(
     <ContentWrapper>
@@ -329,10 +330,9 @@ function Content(){
         <CardBody>{heuristicContent.body}</CardBody>
         <ButtonRow>
           <ButtonPrimary
-            disabled = {alreadyAdded}
+            disabled = {isAdded}
             onClick={() => {
               handleAddButtonClick()
-              setAddedState(true)
             }
           }
           >
@@ -340,9 +340,7 @@ function Content(){
           </ButtonPrimary>
           <ButtonPrimary
             onClick={async () => {
-                curHeuristic = await getHeuristic(getRandomIntInclusive())
-                setContent(curHeuristic)
-                setAddedState(false)
+                setContent(await getHeuristic(getRandomIntInclusive()))
               }
             }
           >
@@ -395,17 +393,28 @@ function Content(){
         <div
           style={{marginTop: "8px"}}
         > 
-          Hingo läuft auf einem kostenlosen App Service Plan. Falls die erste Heuristik nicht lädt, war die Instanz im Standby. Versuch' es einfach in wenigen Minuten erneut.
+          Hingo läuft auf einem kostenlosen App Service Plan. Falls Instanz im Standby war, kann der Start einige Minuten dauern.
         </div>
         <ButtonText
           onClick = {async () => {
-            curHeuristic = await getHeuristic(getRandomIntInclusive())
-            setContent(curHeuristic)
-            setAddedState(false)
+            setLoading(true)
+            setContent(await getHeuristic(getRandomIntInclusive()))
             setStarted(true)
           }}
         >
-          Loslegen
+        {loading ?(
+          <Loader
+            type="Oval"
+            color="#ffffff"
+            height={24}
+            width={24}
+            timeout={3000} //3 secs
+          />
+        ):(
+          <div>
+            Loslegen
+          </div>
+        )}
         </ButtonText>
       </StartContentWrapper>
     )}
