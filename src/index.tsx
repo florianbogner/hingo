@@ -12,6 +12,7 @@ import iconDownload from "./resources/Download.svg"
 
 import { Heuristic } from "./Heuristic"
 import { Languages, Toggle } from "./Toggle"
+import { renderPdf } from "./pdfGenerator"
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Lexend&display=swap');
@@ -357,8 +358,12 @@ function Content() {
 						{heuristicList.length !== 0 ? (
 							<History>
 								<CardHeader>
-									<H1>{language === "german" ? "Aktuelle Auswahl" : "Current Selection"}</H1>
-									<ButtonSecondary>
+									<H1>{language === "german" ? "Aktuelle Auswahl" : "Current selection"}</H1>
+									<ButtonSecondary
+										onClick={() => {
+											renderPdf(heuristicList, language)
+										}}
+									>
 										<img src={iconDownload} alt={"Download"} />
 									</ButtonSecondary>
 								</CardHeader>
