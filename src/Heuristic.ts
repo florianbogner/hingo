@@ -1,7 +1,11 @@
 export interface Heuristic {
     id: number
-    name: string
-    type: string
-    subtitle: string
-    body: string 
+    nameDe: string
+    typeDe: string
+    subtitleDe: string
+    bodyDe: string 
+    nameEn: string
+    typeEn: string
+    subtitleEn: string
+    bodyEn: string 
 }
