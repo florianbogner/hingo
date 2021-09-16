@@ -17,8 +17,6 @@ const Button = styled.button`
 
 	border: none;
 	cursor: pointer;
-
-	padding-top: 3px;
 `
 export const LANGUAGES = ["german", "english"] as const
 export type Languages = typeof LANGUAGES[number]
