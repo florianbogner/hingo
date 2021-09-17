@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import styled, { createGlobalStyle } from "styled-components"
 import Loader from "react-loader-spinner"
 
-import bg from "./resources/bg-hingo.jpg"
+//import bg from "./resources/bg-hingo.jpg"
 import logo from "./resources/logo-hingo.svg"
 import iconRefresh from "./resources/Refresh.svg"
 import iconDown from "./resources/ArrowDown.svg"
@@ -23,7 +23,6 @@ const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-size: 14px;
-    overflow: hidden;
   }
 
   a:link{
@@ -51,13 +50,18 @@ const Header = styled.div`
 	align-items: center;
 	padding-left: 24px;
 	min-height: 64px;
-	background-color: rgba(255, 255, 255, 0.3);
+	background-color: rgba(255, 255, 255, 0.5);
 
 	font-size: 24px;
 	color: #ffffff;
 	background-size: 100% 100%;
 	text-shadow: 0px 0px 32px rgba(255, 255, 255, 1);
 	border-bottom: 1px solid white;
+
+	position: sticky;
+	top: 0;
+
+	z-index: 0;
 `
 
 const HeaderIcon = styled.img`
@@ -69,19 +73,10 @@ const HeaderIcon = styled.img`
 	filter: drop-shadow(0px 0px 32px rgba(255, 255, 255, 0.5));
 `
 
-const Background = styled.div`
-	height: 100vh;
-	width: 100vw;
-
-	background-image: url(${bg});
-	background-position: center top;
-	background-repeat: no-repeat;
-	background-size: cover;
-`
-
 const ContentWrapper = styled.div`
 	display: grid;
 	place-items: center;
+	z-index: 1000;
 `
 
 const LineGray = styled.div`
@@ -198,8 +193,7 @@ const ButtonText = styled.button`
 `
 
 const History = styled.div`
-	margin: 48px;
-	margin-top: 24px;
+	margin: 24px 48px;
 	padding: 24px;
 
 	background-color: rgba(255, 255, 255, 0.3);
@@ -234,7 +228,7 @@ const StartContentWrapper = styled.div`
 `
 
 const Footer = styled.div`
-	position: absolute;
+	position: sticky;
 	bottom: 16px;
 	left: 16px;
 `
@@ -416,11 +410,19 @@ function Content() {
 						</ButtonText>
 					</StartContentWrapper>
 				)}
-				<Footer>
-					<a href="https://www.linkedin.com/in/florian-bogner-84a907142/" target="_blank" rel="noreferrer">
-						© Florian Bogner 2021
-					</a>
-				</Footer>
+				{started ? (
+					<></>
+				) : (
+					<Footer>
+						<a
+							href="https://www.linkedin.com/in/florian-bogner-84a907142/"
+							target="_blank"
+							rel="noreferrer"
+						>
+							© Florian Bogner 2021
+						</a>
+					</Footer>
+				)}
 			</ContentWrapper>
 		</>
 	)
@@ -429,9 +431,7 @@ function Content() {
 ReactDOM.render(
 	<React.StrictMode>
 		<GlobalStyle />
-		<Background>
-			<Content />
-		</Background>
+		<Content />
 	</React.StrictMode>,
 	document.getElementById("root"),
 )
