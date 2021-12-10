@@ -1,46 +1,12 @@
-# Getting Started with Create React App
+# Hingo - Heuristic Bingo
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Hingo is a small creativity tool that enables teams to find new directions for improving their product. It contains 51 heuristics (Wikipedia: "[A heuristic is] any approach to problem solving [...] that employs a practical method that is not guaranteed to be optimal, perfect, or rational, but is nevertheless sufficient for reaching an immediate, short-term goal or approximation.) For this use case, a heuristic is an approximation used by the brain in order to make decisions. Reflecting on them can lead to the discovery of untapped potential for product improvements.
 
-## Available Scripts
+Hingo can be usen in both German and English.
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## How to use Hingo:
+1. Visit [hingo.florian-bogner.de](hingo.florian-bogner.de)
+2. Cycle through randomly selected heuristics and discuss whether they could be interesting for your product.
+3. Bookmark interesting heuristics with the "↓" button.
+4. Generate a PDF of your selection with the download button.
+5. The PDF provides lots of space to scribble and explore how you could implement the heuristic. 
