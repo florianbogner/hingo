@@ -9,4 +9,4 @@ Hingo can be usen in both German and English.
 2. Cycle through randomly selected heuristics and discuss whether they could be interesting for your product.
 3. Bookmark interesting heuristics with the "↓" button.
 4. Generate a PDF of your selection with the download button.
-5. The PDF provides lots of space to scribble and explore how you could implement the heuristic. 
+5. Use the space underneath each heuristic in the PDF to scribble and explore how you could implement it. This is most effective if each team member starts on their own and shares the results with the group afterwards.
