@@ -27,19 +27,19 @@ const GlobalStyle = createGlobalStyle`
   }
 
   a:link{
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(0, 0, 0, 0.5);
   }
 
   a:visited{
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(0, 0, 0, 0.5);
   }
 
   a:hover{
-    color: rgba(255, 255, 255);
+    color: rgba(0, 0, 0);
   }
 
   a:active{
-    color: rgba(255, 255, 255);
+    color: rgba(0, 0, 0);
   }
 `
 
@@ -383,9 +383,35 @@ function Content() {
 					<StartContentWrapper>
 						<H1>{language === "german" ? "Willkommen bei Hingo!" : "Welcome to Hingo!"}</H1>
 						<div style={{ marginTop: "8px" }}>
-							{language === "german"
-								? "Hingo läuft auf einem kostenlosen App Service Plan. Falls die Instanz im Standby war, dauert der Start einige Minuten."
-								: "Hingo is running on a free App Service. If the instance was in standby, the start will take a few minutes."}
+							{language === "german" ? (
+								<>
+									Hingo ist ein kleines Kreativitätswerkzeug, das es Teams ermöglicht, neue Wege zur
+									Verbesserung ihres Produktes zu finden. Mehr Informationen findest du
+									<a
+										href="https://github.com/florianbogner/hingo/"
+										target="_blank"
+										rel="noreferrer"
+										style={{ marginLeft: "3px" }}
+									>
+										auf GitHub
+									</a>
+									.
+								</>
+							) : (
+								<>
+									Hingo is a small creativity tool that enables teams to find new directions for
+									improving their product. You can find more information
+									<a
+										href="https://github.com/florianbogner/hingo/"
+										target="_blank"
+										rel="noreferrer"
+										style={{ marginLeft: "3px" }}
+									>
+										on GitHub
+									</a>
+									.
+								</>
+							)}
 						</div>
 						<ButtonText
 							onClick={async () => {
