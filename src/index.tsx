@@ -3,7 +3,8 @@ import ReactDOM from "react-dom"
 import styled, { createGlobalStyle } from "styled-components"
 import Loader from "react-loader-spinner"
 
-//import bg from "./resources/bg-hingo.jpg"
+import heuristics from "./resources/heuristics.json"
+
 import logo from "./resources/logo-hingo.svg"
 import iconRefresh from "./resources/Refresh.svg"
 import iconDown from "./resources/ArrowDown.svg"
@@ -252,28 +253,19 @@ function getRandomIntInclusive() {
 	return Math.floor(Math.random() * (maxId + 1))
 }
 
-function getHeuristic(id: number): Promise<Heuristic> {
-	return fetch(`https://fbackend.azurewebsites.net/hingo/` + id)
-		.then((res) => res.json())
-		.then((res) => {
-			console.log(`Fetching heuristic ` + id + ` ...`)
-
-			return {
-				id: res.data[0].ID,
-				nameDe: res.data[0].Title_DE,
-				typeDe: res.data[0].Category_DE,
-				subtitleDe: res.data[0].Subtitle_DE,
-				bodyDe: res.data[0].Body_DE,
-				nameEn: res.data[0].Title_EN,
-				typeEn: res.data[0].Category_EN,
-				subtitleEn: res.data[0].Subtitle_EN,
-				bodyEn: res.data[0].Body_EN,
-			}
-		})
-		.catch((err) => {
-			console.log(err.message)
-			return defaultHeuristic
-		})
+function getHeuristic(id: number): Heuristic {
+	const newHeuristic = heuristics.find((h) => h.ID === id)
+	return {
+		id: newHeuristic!.ID,
+		nameDe: newHeuristic!.Title_DE,
+		typeDe: newHeuristic!.Category_DE,
+		subtitleDe: newHeuristic!.Subtitle_DE,
+		bodyDe: newHeuristic!.Text_DE,
+		nameEn: newHeuristic!.Title,
+		typeEn: newHeuristic!.Category,
+		subtitleEn: newHeuristic!.Subtitle,
+		bodyEn: newHeuristic!.Text,
+	}
 }
 
 function Content() {
@@ -342,7 +334,7 @@ function Content() {
 								</ButtonPrimary>
 								<ButtonPrimary
 									onClick={async () => {
-										setContent(await getHeuristic(getRandomIntInclusive()))
+										setContent(getHeuristic(getRandomIntInclusive()))
 									}}
 								>
 									<img src={iconRefresh} alt={"Refresh"} />
@@ -398,7 +390,7 @@ function Content() {
 						<ButtonText
 							onClick={async () => {
 								setLoading(true)
-								setContent(await getHeuristic(getRandomIntInclusive()))
+								setContent(getHeuristic(getRandomIntInclusive()))
 								setStarted(true)
 							}}
 						>
