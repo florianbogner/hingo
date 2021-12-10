@@ -1,6 +1,6 @@
 # Hingo - Heuristic Bingo
 
-Hingo is a small creativity tool that enables teams to find new directions for improving their product. It contains 51 heuristics (Wikipedia: "[A heuristic is] any approach to problem solving [...] that employs a practical method that is not guaranteed to be optimal, perfect, or rational, but is nevertheless sufficient for reaching an immediate, short-term goal or approximation.) For this use case, a heuristic is an approximation used by the brain in order to make decisions. Reflecting on them can lead to the discovery of untapped potential for product improvements.
+Hingo is a small creativity tool that enables teams to find new directions for improving their product. It contains 52 heuristics (Wikipedia: "[A heuristic is] any approach to problem solving [...] that employs a practical method that is not guaranteed to be optimal, perfect, or rational, but is nevertheless sufficient for reaching an immediate, short-term goal or approximation.) For this use case, a heuristic is an approximation used by the brain in order to make decisions. Reflecting on them can lead to the discovery of untapped potential for product improvements.
 
 Hingo can be usen in both German and English.
 
