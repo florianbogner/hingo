@@ -19,6 +19,7 @@ const CardHeader = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	font-size: 24px;
 `
 
 const CategoryTag = styled.div`
@@ -29,6 +30,7 @@ const CategoryTag = styled.div`
 	color: #0000ff;
 	background-color: rgba(0, 0, 255, 0.1);
 	padding: 6px;
+	font-size: 12px;
 `
 
 const LineGray = styled.div`
@@ -56,7 +58,7 @@ export const Card = ({ heuristic, disabled, handleAddButtonClick, handleRefreshB
 	return (
 		<Wrapper>
 			<CardHeader>
-				<div style={{ fontSize: "24px" }}>{heuristic.name}</div>
+				{heuristic.name}
 				<CategoryTag>{heuristic.type}</CategoryTag>
 			</CardHeader>
 			<LineGray />
