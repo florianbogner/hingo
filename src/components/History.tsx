@@ -48,7 +48,9 @@ export const History = ({ heuristicList, handleDeleteButtonClick, setContent, la
 	return (
 		<Wrapper>
 			<Header>
-				<div style={{ fontSize: "24px" }}>{lang === "german" ? "Aktuelle Auswahl" : "Current selection"}</div>
+				<div style={{ fontSize: "24px", marginRight: "24px" }}>
+					{lang === "german" ? "Aktuelle Auswahl" : "Current selection"}
+				</div>
 				<ButtonSecondary
 					onClick={() => {
 						renderPdf(heuristicList, lang)

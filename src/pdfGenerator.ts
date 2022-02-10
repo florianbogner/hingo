@@ -6,7 +6,7 @@ export function renderPdf(heuristicList: Heuristic[], language: Languages) {
     const doc = new jsPDF()
 
     doc.setFontSize(14);
-    var textBuffer = ""
+    let textBuffer = ""
 
     heuristicList.forEach((heuristic) => {
         switch (language) {
