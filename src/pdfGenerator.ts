@@ -1,23 +1,23 @@
 import { jsPDF } from "jspdf"
 import { Heuristic } from "./Heuristic";
-import { Languages } from "./Toggle";
+import { Languages } from "./components/Toggle";
 
-export function renderPdf(heuristicList: Heuristic[], language: Languages){
+export function renderPdf(heuristicList: Heuristic[], language: Languages) {
     const doc = new jsPDF()
 
     doc.setFontSize(14);
     var textBuffer = ""
 
     heuristicList.forEach((heuristic) => {
-        switch (language){
-            case "german":{
-                textBuffer = doc.splitTextToSize(`${ heuristic.nameDe }\n\n${ heuristic.subtitleDe }\n\n${ heuristic.bodyDe }\n\nBrainstorming:`, 160)
+        switch (language) {
+            case "german": {
+                textBuffer = doc.splitTextToSize(`${heuristic.nameDe}\n\n${heuristic.subtitleDe}\n\n${heuristic.bodyDe}\n\nBrainstorming:`, 160)
                 doc.text(textBuffer, 20, 25)
                 doc.addPage()
                 break
             }
-            default:{
-                textBuffer = doc.splitTextToSize(`${ heuristic.nameEn }\n\n${ heuristic.subtitleEn }\n\n${ heuristic.bodyEn }\n\nBrainstorming:`, 160)
+            default: {
+                textBuffer = doc.splitTextToSize(`${heuristic.nameEn}\n\n${heuristic.subtitleEn}\n\n${heuristic.bodyEn}\n\nBrainstorming:`, 160)
                 doc.text(textBuffer, 20, 25)
                 doc.addPage()
                 break

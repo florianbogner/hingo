@@ -3,9 +3,17 @@ export interface Heuristic {
     nameDe: string
     typeDe: string
     subtitleDe: string
-    bodyDe: string 
+    bodyDe: string
     nameEn: string
     typeEn: string
     subtitleEn: string
-    bodyEn: string 
+    bodyEn: string
+}
+
+export interface HeuristicLocalized {
+    id: number
+    name: string
+    type: string
+    subtitle: string
+    body: string
 }

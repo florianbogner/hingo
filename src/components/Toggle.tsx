@@ -1,8 +1,8 @@
 import { useMemo } from "react"
 import styled from "styled-components"
 
-import flagDe from "./resources/flag_de.png"
-import flagEn from "./resources/flag_en.png"
+import flagDe from "./../resources/flag_de.png"
+import flagEn from "./../resources/flag_en.png"
 
 const Button = styled.button`
 	width: 36px;
@@ -18,8 +18,10 @@ const Button = styled.button`
 	border: none;
 	cursor: pointer;
 `
+
 export const LANGUAGES = ["german", "english"] as const
 export type Languages = typeof LANGUAGES[number]
+
 interface ToggleProps {
 	language: Languages
 	onToggle: (newValue: Languages) => void
