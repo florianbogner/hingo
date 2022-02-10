@@ -21,10 +21,6 @@ const Header = styled.div`
 	align-items: center;
 `
 
-const H1 = styled.div`
-	font-size: 24px;
-`
-
 const LineWhite = styled.div`
 	display: block;
 	margin-top: 16px;
@@ -52,7 +48,7 @@ export const History = ({ heuristicList, handleDeleteButtonClick, setContent, la
 	return (
 		<Wrapper>
 			<Header>
-				<H1>{lang === "german" ? "Aktuelle Auswahl" : "Current selection"}</H1>
+				<div style={{ fontSize: "24px" }}>{lang === "german" ? "Aktuelle Auswahl" : "Current selection"}</div>
 				<ButtonSecondary
 					onClick={() => {
 						renderPdf(heuristicList, lang)

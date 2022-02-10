@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-import { Languages } from "./components/Toggle"
+import { Languages } from "./Toggle"
 
 const H1 = styled.div`
 	font-size: 24px;

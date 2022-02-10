@@ -6,8 +6,9 @@ import styled, { createGlobalStyle } from "styled-components"
 import logo from "./resources/logo-hingo.svg"
 
 import { Languages, Toggle } from "./components/Toggle"
-import { Splash } from "./Splash"
+import { Splash } from "./components/Splash"
 import { Game } from "./Game"
+import { Footer } from "./components/Footer"
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Lexend&display=swap');
@@ -74,12 +75,6 @@ const ContentWrapper = styled.div`
 	z-index: 1000;
 `
 
-const Footer = styled.div`
-	position: sticky;
-	bottom: 16px;
-	left: 16px;
-`
-
 function Content() {
 	const [language, setLanguage] = useState<Languages>("german")
 	const langProp = {
@@ -104,11 +99,7 @@ function Content() {
 						<Route path="/" element={<Splash {...langProp} />} />
 					</Routes>
 				</Router>
-				<Footer>
-					<a href="https://www.linkedin.com/in/florian-bogner-84a907142/" target="_blank" rel="noreferrer">
-						© Florian Bogner 2021
-					</a>
-				</Footer>
+				<Footer />
 			</ContentWrapper>
 		</>
 	)

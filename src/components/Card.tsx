@@ -21,10 +21,6 @@ const CardHeader = styled.div`
 	align-items: center;
 `
 
-const H1 = styled.div`
-	font-size: 24px;
-`
-
 const CategoryTag = styled.div`
 	border-radius: 6px;
 	border-style: solid;
@@ -41,11 +37,6 @@ const LineGray = styled.div`
 	border-width: 0;
 	height: 1px;
 	background-color: #ebebeb;
-`
-
-const CardBody = styled.div`
-	color: #929292;
-	padding-top: 8px;
 `
 
 const ButtonRow = styled.div`
@@ -65,12 +56,12 @@ export const Card = ({ heuristic, disabled, handleAddButtonClick, handleRefreshB
 	return (
 		<Wrapper>
 			<CardHeader>
-				<H1>{heuristic.name}</H1>
+				<div style={{ fontSize: "24px" }}>{heuristic.name}</div>
 				<CategoryTag>{heuristic.type}</CategoryTag>
 			</CardHeader>
 			<LineGray />
 			<div>{heuristic.subtitle}</div>
-			<CardBody>{heuristic.body}</CardBody>
+			<div style={{ color: "#929292", paddingTop: "8px" }}>{heuristic.body}</div>
 			<ButtonRow>
 				<ButtonPrimary
 					disabled={disabled}
