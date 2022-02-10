@@ -80,12 +80,6 @@ const Footer = styled.div`
 	left: 16px;
 `
 
-const maxId: number = 52
-
-function getRandomIntInclusive() {
-	return Math.floor(Math.random() * (maxId + 1))
-}
-
 function Content() {
 	const [language, setLanguage] = useState<Languages>("german")
 	const langProp = {

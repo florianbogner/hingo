@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Hingo",
+  "name": "A small creativity tool using heuristics.",
   "icons": [
     {
       "src": "favicon.ico",

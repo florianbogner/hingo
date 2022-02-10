@@ -1,15 +1,12 @@
 import styled from "styled-components"
-import { Heuristic, HeuristicLocalized } from "../Heuristic"
-import { ButtonPrimary } from "./ButtonStyles"
 
-import iconRefresh from "./resources/Refresh.svg"
-import iconDown from "./resources/ArrowDown.svg"
-import { PropsWithChildren } from "react"
 import { CardProps } from "../Game"
+import { ButtonPrimary } from "./ButtonStyles"
+import iconDown from "./../resources/ArrowDown.svg"
+import iconRefresh from "./../resources/Refresh.svg"
 
 const Wrapper = styled.div`
 	margin: 24px;
-	margin-bottom: 0px;
 	max-width: 486px;
 	padding: 24px;
 
@@ -64,7 +61,7 @@ const ButtonRow = styled.div`
 	justify-content: center;
 `
 
-export const Card = ({ heuristic, children }: CardProps) => {
+export const Card = ({ heuristic, disabled, handleAddButtonClick, handleRefreshButtonClick }: CardProps) => {
 	return (
 		<Wrapper>
 			<CardHeader>
@@ -74,7 +71,23 @@ export const Card = ({ heuristic, children }: CardProps) => {
 			<LineGray />
 			<div>{heuristic.subtitle}</div>
 			<CardBody>{heuristic.body}</CardBody>
-			<ButtonRow>{children}</ButtonRow>
+			<ButtonRow>
+				<ButtonPrimary
+					disabled={disabled}
+					onClick={() => {
+						handleAddButtonClick()
+					}}
+				>
+					<img src={iconDown} alt={"Add to list"} />
+				</ButtonPrimary>
+				<ButtonPrimary
+					onClick={() => {
+						handleRefreshButtonClick()
+					}}
+				>
+					<img src={iconRefresh} alt={"Refresh"} />
+				</ButtonPrimary>
+			</ButtonRow>
 		</Wrapper>
 	)
 }
