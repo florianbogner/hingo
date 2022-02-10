@@ -5,6 +5,7 @@ import { ButtonPrimary } from "./ButtonStyles"
 import iconRefresh from "./resources/Refresh.svg"
 import iconDown from "./resources/ArrowDown.svg"
 import { PropsWithChildren } from "react"
+import { CardProps } from "../Game"
 
 const Wrapper = styled.div`
 	margin: 24px;
@@ -62,8 +63,6 @@ const ButtonRow = styled.div`
 	display: flex;
 	justify-content: center;
 `
-
-type CardProps = PropsWithChildren<{ heuristic: HeuristicLocalized }>
 
 export const Card = ({ heuristic, children }: CardProps) => {
 	return (

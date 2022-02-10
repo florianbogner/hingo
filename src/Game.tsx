@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react"
+import { PropsWithChildren, useCallback, useMemo, useState } from "react"
 import styled from "styled-components"
 
 import heuristics from "./resources/heuristics.json"
@@ -8,38 +8,11 @@ import iconDown from "./resources/ArrowDown.svg"
 import iconTrash from "./resources/Trash.svg"
 import iconDownload from "./resources/Download.svg"
 
-import { Heuristic } from "./Heuristic"
+import { Heuristic, HeuristicLocalized } from "./Heuristic"
 import { renderPdf } from "./pdfGenerator"
 import { Languages } from "./components/Toggle"
 import { ButtonPrimary, ButtonSecondary } from "./components/ButtonStyles"
-
-const LineGray = styled.div`
-	display: block;
-	margin: 16px 0;
-	border-width: 0;
-	height: 1px;
-	background-color: #ebebeb;
-`
-
-const LineWhite = styled.div`
-	display: block;
-	margin-top: 16px;
-	margin-bottom: 10px;
-	border-width: 0;
-	height: 1px;
-	background-color: #ffffff;
-`
-
-const Card = styled.div`
-	margin: 24px;
-	margin-bottom: 0px;
-	max-width: 486px;
-	padding: 24px;
-
-	background-color: #ffffff;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 4px 24px rgba(0, 0, 0, 0.1);
-	border-radius: 24px;
-`
+import { Card } from "./components/Card"
 
 const CardHeader = styled.div`
 	display: flex;
@@ -51,32 +24,13 @@ const H1 = styled.div`
 	font-size: 24px;
 `
 
-const CategoryTag = styled.div`
-	border-radius: 6px;
-	border-style: solid;
-	border-color: #0000ff;
-	border-width: 1px;
-	color: #0000ff;
-	background-color: rgba(0, 0, 255, 0.1);
-	padding: 6px;
-`
-
-const CardBody = styled.div`
-	color: #929292;
-	padding-top: 8px;
-`
-
-const ButtonRow = styled.div`
-	background-color: #f7f7f7;
-	margin-top: 24px;
-	margin-left: -24px;
-	margin-right: -24px;
-	margin-bottom: -24px;
-	padding: 16px;
-	border-radius: 0px 0px 24px 24px;
-
-	display: flex;
-	justify-content: center;
+const LineWhite = styled.div`
+	display: block;
+	margin-top: 16px;
+	margin-bottom: 10px;
+	border-width: 0;
+	height: 1px;
+	background-color: #ffffff;
 `
 
 const History = styled.div`
@@ -102,23 +56,9 @@ const HeuristicItemTitle = styled.div`
 	}
 `
 
-const defaultHeuristic: Heuristic = {
-	id: 0,
-	nameDe: "Hingo",
-	typeDe: "default",
-	subtitleDe:
-		"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.",
-	bodyDe: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
-	nameEn: "Hingo",
-	typeEn: "default",
-	subtitleEn:
-		"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam.",
-	bodyEn: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
-}
-
-const maxId: number = 52
-
 const getRandomIntInclusive = () => {
+	const maxId = Object.keys(heuristics).length
+
 	return Math.floor(Math.random() * (maxId + 1))
 }
 
@@ -141,8 +81,10 @@ interface props {
 	lang: Languages
 }
 
+export type CardProps = PropsWithChildren<{ heuristic: HeuristicLocalized }>
+
 export const Game = ({ lang }: props) => {
-	const [heuristicContent, setContent] = useState(defaultHeuristic)
+	const [heuristicContent, setContent] = useState(getHeuristic(1))
 	const [heuristicList, setItems] = useState(new Array<Heuristic>())
 
 	const handleAddButtonClick = useCallback(() => {
@@ -165,33 +107,46 @@ export const Game = ({ lang }: props) => {
 		return !!heuristicList.find((h) => h.id === heuristicContent.id)
 	}, [heuristicList, heuristicContent])
 
+	let heuristicLocalized: CardProps = {
+		heuristic: {
+			id: heuristicContent.id,
+			name: heuristicContent.nameDe,
+			type: heuristicContent.typeDe,
+			subtitle: heuristicContent.subtitleDe,
+			body: heuristicContent.bodyDe,
+		},
+	}
+
+	if (lang === "english") {
+		heuristicLocalized = {
+			heuristic: {
+				id: heuristicContent.id,
+				name: heuristicContent.nameEn,
+				type: heuristicContent.typeEn,
+				subtitle: heuristicContent.subtitleEn,
+				body: heuristicContent.bodyEn,
+			},
+		}
+	}
+
 	return (
 		<>
-			<Card>
-				<CardHeader>
-					<H1>{lang === "german" ? heuristicContent.nameDe : heuristicContent.nameEn}</H1>
-					<CategoryTag>{lang === "german" ? heuristicContent.typeDe : heuristicContent.typeEn}</CategoryTag>
-				</CardHeader>
-				<LineGray />
-				<div>{lang === "german" ? heuristicContent.subtitleDe : heuristicContent.subtitleEn}</div>
-				<CardBody>{lang === "german" ? heuristicContent.bodyDe : heuristicContent.bodyEn}</CardBody>
-				<ButtonRow>
-					<ButtonPrimary
-						disabled={isAdded}
-						onClick={() => {
-							handleAddButtonClick()
-						}}
-					>
-						<img src={iconDown} alt={"Add to list"} />
-					</ButtonPrimary>
-					<ButtonPrimary
-						onClick={async () => {
-							setContent(getHeuristic(getRandomIntInclusive()))
-						}}
-					>
-						<img src={iconRefresh} alt={"Refresh"} />
-					</ButtonPrimary>
-				</ButtonRow>
+			<Card {...heuristicLocalized}>
+				<ButtonPrimary
+					disabled={isAdded}
+					onClick={() => {
+						handleAddButtonClick()
+					}}
+				>
+					<img src={iconDown} alt={"Add to list"} />
+				</ButtonPrimary>
+				<ButtonPrimary
+					onClick={async () => {
+						setContent(getHeuristic(getRandomIntInclusive()))
+					}}
+				>
+					<img src={iconRefresh} alt={"Refresh"} />
+				</ButtonPrimary>
 			</Card>
 			{heuristicList.length !== 0 ? (
 				<History>
